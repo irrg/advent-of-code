@@ -6,14 +6,14 @@ const values = [159, 158, 174, 196, 197, 194, 209, 213, 214, 222, 223, 228, 229,
  * the sum of only two rolling values will be a lot lower than the last value so it'll
  * get eliminated that way.
  */
-const rollingWindowValues = values.reduce((rollingWindowValues, currentValue, currentIndex) => {
-    rollingWindowValues.push(
+const windowValues = values.reduce((windowValues, currentValue, currentIndex) => {
+    windowValues.push(
       values
         .slice(currentIndex, currentIndex + 3)
         .reduce((sum, value) => sum += value, 0)
     );
 
-    return rollingWindowValues;
+    return windowValues;
   },
   []
 );
@@ -21,4 +21,4 @@ const rollingWindowValues = values.reduce((rollingWindowValues, currentValue, cu
 const compareValues = (values) => values.reduce((count, currentValue, currentIndex) => count + (values[currentIndex - 1] < currentValue ? 1 : 0), 0);
 
 console.log('Part 1', compareValues(values));
-console.log('Part 2', compareValues(rollingWindowValues));
+console.log('Part 2', compareValues(windowValues));
