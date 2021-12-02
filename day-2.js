@@ -16,11 +16,8 @@ const calculatePosition = (steps, aimFeatureFlag = false) => {
         aim += aimFeatureFlag ? units : 0;
         break;
       case 'forward':
-        x = x + units;
-
-        if (aimFeatureFlag) {
-          y = y + (aim * units);
-        }
+        x += units;
+        y += aimFeatureFlag ? aim * units : 0;
         break;
     }
 
