@@ -61,6 +61,8 @@ const getLifeSupportRating = (values, type) => {
   positions.forEach(position => {
     const { zeroCount, oneCount } = compareBits(getBitsAtPosition(localValues, position));
 
+    // the decidingBit logic is so simplistic that you want to check
+    // that there's more than value left or it'll remove the last one too.
     if (localValues.length > 1) {
       if (oneCount === zeroCount) {
         decidingBit = type === 'CO2' ? '0' : '1';
@@ -74,6 +76,7 @@ const getLifeSupportRating = (values, type) => {
     }
   });
 
+  // at the end, there's only one value left by default.
   return parseInt(localValues[0], 2);
 };
 
