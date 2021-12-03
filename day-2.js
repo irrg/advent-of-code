@@ -1,5 +1,12 @@
 const utils = require('./utils.js');
 
+/**
+ * Calculate the position at the end of a series of steps.
+ *
+ * @param {Array} steps
+ * @param {boolean} aimFeatureFlag
+ * @returns Number
+ */
 const calculatePosition = (steps, aimFeatureFlag = false) => {
   const c = steps.reduce(({ aim, x, y }, step) => {
     let [movement, units] = step.split(' ');
@@ -30,6 +37,9 @@ const calculatePosition = (steps, aimFeatureFlag = false) => {
   return c.x * c.y;
 };
 
+/**
+ * Do the thing.
+ */
 const main = async () => {
   const values = await utils.readInputFile(2);
 
