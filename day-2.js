@@ -31,7 +31,7 @@ const calculatePosition = (steps, aimFeatureFlag = false) => {
 };
 
 const main = async () => {
-  const values = await utils.readInputFile(2, true);
+  const values = await utils.readInputFile(2);
 
   console.log('Part 1', calculatePosition(values));
   console.log('Part 2', calculatePosition(values, true));
