@@ -156,6 +156,7 @@ const cardsThatHaveNotWon = (cards) => cards.filter((card) => !card.won);
 
   while (!lastCard.won) {
     handleDraw(lastCard, draws[drawIndex]);
+    
     if (!lastCard.won) {
       drawIndex++;
     }
