@@ -20,7 +20,7 @@ const buildCardStructure = (rawCard) => {
     cardStructure.drawn[rowIndex] = [];
 
     row.forEach((entry, entryIndex) => {
-      cardStructure.drawn[rowIndex][entryIndex] = false;
+      cardStructure.drawn[rowIndex][entryIndex] = 0;
       cardStructure.cardFlat.push(entry);
     });
   });
@@ -37,10 +37,10 @@ const handleDraw = (card, draw) => {
   card.card.forEach((row, rowIndex) => {
     row.forEach((entry, entryIndex) => {
       if (entry === draw) {
-        card.drawn[rowIndex][entryIndex] = true;
+        card.drawn[rowIndex][entryIndex] = 1;
       }
     });
-    if (row.every((value) => value === true)) {
+    if (card.drawn[rowIndex].every((value) => value > 0)) {
       card.won = true;
     }
   });
@@ -49,15 +49,52 @@ const handleDraw = (card, draw) => {
   // if the normal version doesn't have a winner, let's transpose.
   if (!card.won) {
     const cardTransposed = utils.transposeArray(card.drawn);
-    cardTransposed.forEach((row) => {
-      if (row.every((value) => value === true)) {
+    cardTransposed.forEach((row, rowIndex) => {
+      if (cardTransposed[rowIndex].every((value) => value > 0)) {
         card.won = true;
-      }
-    });    
+      };    
+    });
   }
 
   return card;
 };
+
+/**
+ * Run a bingo game
+ * 
+ * @param {Array} draws 
+ * @param {Array} cards 
+ * @returns {object}
+ */
+const runDraw = (draws, cards) => {
+  let winningCard = null;
+  let drawIndex = 0;
+  let values = 0;
+
+  while (!winningCard) {
+    cards.forEach((card) => {
+      card = handleDraw(card, draws[drawIndex]);
+      
+      if (card.won) {
+        winningCard = card;
+      }
+    });
+
+    if (!winningCard) {
+      drawIndex++;
+    }
+  };
+
+  winningCard.drawn.forEach((row, rowIndex) => {
+    row.forEach((entry, entryIndex) => {
+      if (entry === 0) {
+        values += winningCard.card[rowIndex][entryIndex];
+      }
+    });
+  });
+
+  return values * draws[drawIndex];
+}
 
 /**
  * Do the thing.
@@ -68,31 +105,13 @@ const main = async () => {
   let cardObjects = {};
   let hasBingo = false;
   let drawIndex = 0;
-
+  
   // parse data because this one's…special
-  [draws, ...cards] = await utils.readInputFile(4, true, '\n\n');
+  [draws, ...cards] = await utils.readInputFile(4, false, '\n\n');
   draws = draws.split(',').map((value) => Number(value));
   cards = cards.map((card) => buildCardStructure(card));
 
-  while (!hasBingo) {
-    const draw = draws[drawIndex];
-    console.log(`Drawing ${draw}`);
-
-    cards.forEach((card) => {
-      card = handleDraw(card, draw);
-      
-      if (card.won) {
-        hasBingo = true;
-        console.log(card);
-      }
-    });
-
-    if (!hasBingo) {
-      drawIndex++;
-    }
-  };
-
-  console.log('Part 1');
+  console.log('Part 1', runDraw(draws, cards));
 };
 
 main();
