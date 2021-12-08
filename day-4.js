@@ -1,5 +1,11 @@
 const utils = require('./utils.js');
 
+/**
+ * Convert the raw card data into something usable.
+ * 
+ * @param {string} rawCard 
+ * @returns Array
+ */
 const buildCardStructure = (rawCard) => {
   const card = rawCard
   .split('\n')
@@ -28,6 +34,13 @@ const buildCardStructure = (rawCard) => {
   return cardStructure;
 };
 
+/**
+ * Process the draw on a single card and pass it back, updated.
+ * 
+ * @param {object} card 
+ * @param {number} draw 
+ * @returns object
+ */
 const handleDraw = (card, draw) => {
   // no need to do all that work if the number isn't on the card.
   if (!card.cardFlat.includes(draw)) {
@@ -45,7 +58,6 @@ const handleDraw = (card, draw) => {
     }
   });
 
-
   // if the normal version doesn't have a winner, let's transpose.
   if (!card.won) {
     const cardTransposed = utils.transposeArray(card.drawn);
@@ -60,13 +72,34 @@ const handleDraw = (card, draw) => {
 };
 
 /**
- * Run a bingo game
+ * Get the winning card's value
+ * 
+ * @param {object} card 
+ * @param {number} draw 
+ * @returns number
+ */
+const cardValue = (card, draw) => {
+  let values = 0;
+
+  card.drawn.forEach((row, rowIndex) => {
+    row.forEach((entry, entryIndex) => {
+      if (entry === 0) {
+        values += card.card[rowIndex][entryIndex];
+      }
+    });
+  });
+
+  return values * draw;
+};
+
+/**
+ * Run a bingo game while trying to win
  * 
  * @param {Array} draws 
  * @param {Array} cards 
  * @returns {object}
  */
-const runDraw = (draws, cards) => {
+const playToWin = (draws, cards) => {
   let winningCard = null;
   let drawIndex = 0;
   let values = 0;
@@ -85,15 +118,50 @@ const runDraw = (draws, cards) => {
     }
   };
 
-  winningCard.drawn.forEach((row, rowIndex) => {
-    row.forEach((entry, entryIndex) => {
-      if (entry === 0) {
-        values += winningCard.card[rowIndex][entryIndex];
-      }
-    });
-  });
+  return cardValue(winningCard, draws[drawIndex]);
+}
 
-  return values * draws[drawIndex];
+/**
+ * Filter to all cards that have not yet won.
+ * 
+ * @param {Array} cards 
+ * @returns Array
+ */
+const cardsThatHaveNotWon = (cards) => cards.filter((card) => !card.won);
+
+/**
+ * Figure out which card wins last
+ * 
+ * @param {Array} draws 
+ * @param {Array} cards 
+ * @returns {object}
+ */
+ const playToLose = (draws, cards) => {
+  const leftCards = cardsThatHaveNotWon(cards);
+  let cardsLeftCount = leftCards.length;
+  let drawIndex = 0;
+  let lastCard;
+
+  while (cardsLeftCount > 1) {   
+    leftCards.forEach((card) => {
+      card = handleDraw(card, draws[drawIndex]);
+    });
+
+    cardsLeftCount = cardsThatHaveNotWon(cards).length;
+    drawIndex++;
+  };
+
+  // this gives us the last not-winning card. Let's finish 'er.
+  lastCard = cardsThatHaveNotWon(cards)[0];
+
+  while (!lastCard.won) {
+    handleDraw(lastCard, draws[drawIndex]);
+    if (!lastCard.won) {
+      drawIndex++;
+    }
+  }
+  
+  return cardValue(lastCard, draws[drawIndex]);
 }
 
 /**
@@ -111,7 +179,8 @@ const main = async () => {
   draws = draws.split(',').map((value) => Number(value));
   cards = cards.map((card) => buildCardStructure(card));
 
-  console.log('Part 1', runDraw(draws, cards));
+  console.log('Part 1', playToWin(draws, cards));
+  console.log('Part 2', playToLose(draws, cards));
 };
 
 main();
