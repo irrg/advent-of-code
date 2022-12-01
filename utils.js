@@ -17,15 +17,6 @@ const readInputFile = async (day, example = false, split = '\n') => {
   }
 }
 
-/**
- * Transpose array helper, because these advents need this too much. 
- * 
- * @param {Array} m
- * @returns Array
- */
- const transposeArray = (m) => m[0].map((x,i) => m.map(x => x[i]));
-
-module.exports = { 
+module.exports = {
   readInputFile,
-  transposeArray,
 };
