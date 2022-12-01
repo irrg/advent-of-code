@@ -27,9 +27,7 @@ const getSum = (values) => values.reduce((total, i) => total + parseInt(i), 0);
  const readInputFile = async (fileName, delimiters = ['\n']) => {
   try {
     const data = await readFile(`./input/${fileName}.txt`, 'utf8');
-    return delimiters.length
-      ? recursiveSplit(data, delimiters)
-      : data;
+    return recursiveSplit(data, delimiters);
   }
   catch(err) {
     console.log(err);
@@ -43,7 +41,7 @@ const getSum = (values) => values.reduce((total, i) => total + parseInt(i), 0);
  * @param {Array} delimiters
  * @returns Array
  */
- const recursiveSplit = (string, delimiters) => {
+const recursiveSplit = (string, delimiters) => {
   return delimiters.length
     ? string.split(delimiters[0]).map(x => recursiveSplit(x, delimiters.slice(1)))
     : string;
