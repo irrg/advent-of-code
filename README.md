@@ -1,1 +1,3 @@
-# Advent of Code 2021
+# Advent of Code
+
+Node Boilerplate w/ a quick readFile utility.
