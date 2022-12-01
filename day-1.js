@@ -6,7 +6,7 @@ const getNHighestValues = (values, n) =>
         return a - b;
       })
       .slice(-n)
-      .reduce((totalCalories, elfCalories) => totalCalories + elfCalories, 0);
+      .reduce((total, i) => total + i, 0);
 
 /**
  * Do the thing.
