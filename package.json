@@ -1,0 +1,21 @@
+{
+  "name": "advent_of_code",
+  "version": "2022.12.25",
+  "description": "",
+  "main": "day-1.mjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://irrg@github.com/irrg/advent_of_code.git"
+  },
+  "author": "robb@irrg.org",
+  "license": "MIT",
+  "homepage": "https://github.com/irrg/advent_of_code#readme",
+  "devDependencies": {
+    "eslint": "^8.28.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-react": "^7.31.11",
+    "eslint-plugin-react-hooks": "^4.6.0"
+  }
+}

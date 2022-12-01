@@ -1,4 +1,12 @@
-import { readFile }  from 'fs/promises';
+import { readFile } from 'fs/promises';
+
+/**
+ * Sum up the values in an array.
+ *
+ * @param {Array} values
+ * @returns number
+ */
+const getSum = (values) => values.reduce((total, i) => total + parseInt(i, 10), 0);
 
 /**
  * Get the highest n values from an array.
@@ -7,32 +15,8 @@ import { readFile }  from 'fs/promises';
  * @param {number} n
  * @returns Array
  */
+
 const getNHighestValues = (values, n) => getSum(values.sort((a, b) => a - b).slice(-n));
-
-/**
- * Sum up the values in an array.
- *
- * @param {Array} values
- * @returns number
- */
-const getSum = (values) => values.reduce((total, i) => total + parseInt(i), 0);
-
-/**
- * Read a file in a promise and split it into an array based on one or more delimiters.
- *
- * @param {string} fileName
- * @param {Array} delimiters
- * @returns Array
- */
- const readInputFile = async (fileName, delimiters = ['\n']) => {
-  try {
-    const data = await readFile(`./input/${fileName}.txt`, 'utf8');
-    return recursiveSplit(data, delimiters);
-  }
-  catch(err) {
-    console.log(err);
-  }
-}
 
 /**
  * Recursively split an array of values based on one or more delimiters.
@@ -41,10 +25,25 @@ const getSum = (values) => values.reduce((total, i) => total + parseInt(i), 0);
  * @param {Array} delimiters
  * @returns Array
  */
-const recursiveSplit = (string, delimiters) => {
-  return delimiters.length
-    ? string.split(delimiters[0]).map(x => recursiveSplit(x, delimiters.slice(1)))
-    : string;
+const recursiveSplit = (string, delimiters) => (delimiters.length
+  ? string.split(delimiters[0]).map((x) => recursiveSplit(x, delimiters.slice(1)))
+  : string);
+
+/**
+ * Read a file in a promise and split it into an array based on one or more delimiters.
+ *
+ * @param {string} fileName
+ * @param {Array} delimiters
+ * @returns Array
+ */
+const readInputFile = async (fileName, delimiters = ['\n']) => {
+  try {
+    const data = await readFile(`./input/${fileName}.txt`, 'utf8');
+    return recursiveSplit(data, delimiters);
+  } catch (err) {
+    console.log(err);
+    return '';
+  }
 };
 
 export {
