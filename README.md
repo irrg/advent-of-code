@@ -1,3 +1,3 @@
-# Advent of Code
+# Advent of Code 2022
 
-Node Boilerplate w/ a quick readFile utility.
+Let's see how long this goes this year.

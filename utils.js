@@ -7,9 +7,9 @@ const { readFile } = require('fs/promises');
  * @param {boolean} example
  * @returns Array
  */
-const readInputFile = async (day, example = false, split = '\n') => {
+const readInputFile = async (fileName, split = '\n') => {
   try {
-    const data = await readFile(`./input/day-${day}${example ? '-example' : ''}.txt`, 'utf8');
+    const data = await readFile(`./input/${fileName}.txt`, 'utf8');
     return data.split(split);
   }
   catch(err) {
