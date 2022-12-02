@@ -3,6 +3,14 @@ import {
   readInputFile,
 } from './utils.mjs';
 
+/**
+ * Get the points for a round of the game using the uh, interesting interpretation of the playbook.
+ *
+* @param {Array} shapes
+ * @returns {string} shapes[0] opponentShape
+ * @returns {string} shapes[1] playerShape
+ * @returns number
+ */
 const getRoundOneScore = ([opponentShape, playerShape]) => {
   // Round One assumes A, X: Rock; B, Y: Paper, C, Z: Scissors
   const shapePoints = {
@@ -24,6 +32,15 @@ const getRoundOneScore = ([opponentShape, playerShape]) => {
   return playPoints[`${opponentShape}${playerShape}`] + shapePoints[playerShape];
 };
 
+/**
+ * Get the points for a round of the game using the uh, even more interesting interpretation
+ * of the playbook. Who writes these things?
+ *
+* @param {Array} shapes
+ * @returns {string} shapes[0] opponentShape
+ * @returns {string} shapes[1] playerShape
+ * @returns number
+ */
 const getRoundTwoScore = ([opponentShape, intendedOutcome]) => {
   // Round Two assumes X: Lose, Y: Draw, Z: Win
   const shapePoints = {
