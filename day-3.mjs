@@ -27,6 +27,8 @@ const getPointValue = (letter) => {
  * @param {Array} team
  * @returns string
  */
+// I was trying to do this recursively so the same method could be used for both puzzles, 
+// but it didn't work right off the bat, and life's too short.
 const findTeambadge = (team) => team[0]
   .filter(symbol => team[1].includes(symbol))
   .filter(symbol => team[2].includes(symbol))[0];
