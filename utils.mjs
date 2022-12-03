@@ -56,7 +56,7 @@ const splitUpArray = (array, n) => {
   const sourceArray = [...array];
   const targetArray = [];
 
-  while(sourceArray.length) {
+  while (sourceArray.length) {
     targetArray.push(sourceArray.splice(0, n));
   }
 
