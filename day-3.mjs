@@ -30,8 +30,8 @@ const getPointValue = (letter) => {
 // I was trying to do this recursively so the same method could be used for both puzzles,
 // but it didn't work right off the bat, and life's too short.
 const findTeambadge = (team) => team[0]
-  .filter((symbol) => team[1].includes(symbol))
-  .filter((symbol) => team[2].includes(symbol))[0];
+  .filter((letter) => team[1].includes(letter))
+  .filter((letter) => team[2].includes(letter))[0];
 
 /**
  * Find the item that should be in one compartment of the rucksack but is in both.
@@ -44,7 +44,7 @@ const findMisplacedItem = (rucksack) => {
   const firstCompartment = secondCompartment
     .splice(0, secondCompartment.length / 2);
   return secondCompartment
-    .filter((symbol) => firstCompartment.includes(symbol))[0];
+    .filter((letter) => firstCompartment.includes(letter))[0];
 };
 
 /**
