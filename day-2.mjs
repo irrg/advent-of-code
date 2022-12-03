@@ -37,8 +37,8 @@ const getRoundOneScore = ([opponentShape, playerShape]) => {
  * of the playbook. Who writes these things?
  *
 * @param {Array} shapes
- * @returns {string} shapes[0] opponentShape
- * @returns {string} shapes[1] playerShape
+ * @param {string} shapes[0] opponentShape
+ * @param {string} shapes[1] playerShape
  * @returns number
  */
 const getRoundTwoScore = ([opponentShape, intendedOutcome]) => {
@@ -78,7 +78,7 @@ const getRoundTwoScore = ([opponentShape, intendedOutcome]) => {
  * Do the thing.
  */
 const main = async () => {
-  const values = (await readInputFile('day-2', ['\n', ' ']));
+  const values = await readInputFile('day-2', ['\n', ' ']);
   const partOneScore = getSum(values.map((game) => getRoundOneScore(game)));
   const partTwoScore = getSum(values.map((game) => getRoundTwoScore(game)));
 

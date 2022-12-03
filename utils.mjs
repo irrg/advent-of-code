@@ -15,7 +15,6 @@ const getSum = (values) => values.reduce((total, i) => total + parseInt(i, 10), 
  * @param {number} n
  * @returns Array
  */
-
 const getNHighestValues = (values, n) => getSum(values.sort((a, b) => a - b).slice(-n));
 
 /**
@@ -46,9 +45,28 @@ const readInputFile = async (fileName, delimiters = ['\n']) => {
   }
 };
 
+/**
+ * Chunk an array up into sets of n
+ *
+ * @param {Array} array
+ * @param {number} n
+ * @returns Array
+ */
+const splitUpArray = (array, n) => {
+  const sourceArray = [...array];
+  const targetArray = [];
+
+  while(sourceArray.length) {
+    targetArray.push(sourceArray.splice(0, n));
+  }
+
+  return targetArray;
+};
+
 export {
   getNHighestValues,
   getSum,
   readInputFile,
   recursiveSplit,
+  splitUpArray,
 };
