@@ -3,8 +3,12 @@ module.exports = {
     es2021: true,
     node: true,
   },
+  plugins: [
+    'jsdoc',
+  ],
   extends: [
     'airbnb-base',
+    'plugin:jsdoc/recommended',
   ],
   rules: {
     'no-console': 'off',

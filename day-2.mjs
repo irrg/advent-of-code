@@ -6,10 +6,10 @@ import {
 /**
  * Get the points for a round of the game using the uh, interesting interpretation of the playbook.
  *
-* @param {Array} shapes
- * @param {string} shapes[0] opponentShape
- * @param {string} shapes[1] playerShape
- * @returns {number}
+ * @param {Array} shapes opponent and player shapes
+ * @param {string} shapes."0" opponent shape
+ * @param {string} shapes."1" player shape
+ * @returns {number} points
  */
 const getRoundOneScore = ([opponentShape, playerShape]) => {
   // Round One assumes A, X: Rock; B, Y: Paper, C, Z: Scissors
@@ -36,10 +36,10 @@ const getRoundOneScore = ([opponentShape, playerShape]) => {
  * Get the points for a round of the game using the uh, even more interesting interpretation
  * of the playbook. Who writes these things?
  *
-* @param {Array} shapes
- * @param {string} shapes[0] opponentShape
- * @param {string} shapes[1] playerShape
- * @returns {number}
+ * @param {Array} shapes opponent and player shapes
+ * @param {string} shapes."0" opponent shape
+ * @param {string} shapes."1" player shape
+ * @returns {number} points
  */
 const getRoundTwoScore = ([opponentShape, intendedOutcome]) => {
   // Round Two assumes X: Lose, Y: Draw, Z: Win

@@ -7,14 +7,10 @@ import {
  * Determine if for two ranges, one completely contains the other.
  * P.S. The jsdoc below feels like i'm abusing jsdoc.
  *
- * @param {Array} team
- * @param {Array} team[0] range1
- * @param {Array} team[0][0] range1Start
- * @param {Array} team[0][1] range1End
- * @param {Array} team[1] range2
- * @param {Array} team[1][0] range2Start
- * @param {Array} team[1][1] range2End
- * @returns {number}
+ * @param {Array} team team of two elves
+ * @param {number} team."0" range 1
+ * @param {number} team."1" range 2
+ * @returns {number} number-based bool result
  */
 const findFullyContainedAssignments = ([
   [range1Start, range1End],
@@ -28,14 +24,10 @@ const findFullyContainedAssignments = ([
  * Determine if for two ranges overlap.
  * P.S. The jsdoc below feels like i'm abusing jsdoc.
  *
- * @param {Array} team
- * @param {Array} team[0] range1
- * @param {Array} team[0][0] range1Start
- * @param {Array} team[0][1] range1End
- * @param {Array} team[1] range2
- * @param {Array} team[1][0] range2Start
- * @param {Array} team[1][1] range2End
- * @returns {number}
+ * @param {Array} team team of two elves
+ * @param {number} team."0" range 1
+ * @param {number} team."1" range 2
+ * @returns {number} number-based bool result
  */
 const findOverlappingAssignments = ([
   [range1Start, range1End],
