@@ -16,7 +16,6 @@ import {
  * @param {Array} team[1][1] range2End
  * @returns {number}
  */
-
 const findFullyContainedAssignments = ([
   [range1Start, range1End],
   [range2Start, range2End],
@@ -30,6 +29,19 @@ const findFullyContainedAssignments = ([
   ? 1
   : 0);
 
+  /**
+ * Determine if for two ranges overlap.
+ * P.S. The jsdoc below feels like i'm abusing jsdoc.
+ *
+ * @param {Array} team
+ * @param {Array} team[0] range1
+ * @param {Array} team[0][0] range1Start
+ * @param {Array} team[0][1] range1End
+ * @param {Array} team[1] range2
+ * @param {Array} team[1][0] range2Start
+ * @param {Array} team[1][1] range2End
+ * @returns {number}
+ */
 const findOverlappingAssignments = ([
   [range1Start, range1End],
   [range2Start, range2End],
