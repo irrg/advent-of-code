@@ -4,7 +4,7 @@ import { readFile } from 'fs/promises';
  * Sum up the values in an array.
  *
  * @param {Array} values
- * @returns number
+ * @returns {number}
  */
 const getSum = (values) => values.reduce((total, i) => total + parseInt(i, 10), 0);
 
@@ -13,7 +13,7 @@ const getSum = (values) => values.reduce((total, i) => total + parseInt(i, 10), 
  *
  * @param {Array} values
  * @param {number} n
- * @returns Array
+ * @returns {Array}
  */
 const getNHighestValues = (values, n) => getSum(values.sort((a, b) => a - b).slice(-n));
 
@@ -22,23 +22,24 @@ const getNHighestValues = (values, n) => getSum(values.sort((a, b) => a - b).sli
  *
  * @param {string} string
  * @param {Array} delimiters
- * @returns Array
+ * @param {boolean} parseNumber
+ * @returns {Array}
  */
-const recursiveSplit = (string, delimiters) => (delimiters.length
-  ? string.split(delimiters[0]).map((x) => recursiveSplit(x, delimiters.slice(1)))
-  : string);
+const recursiveSplit = (string, delimiters, parseNumber) => (delimiters.length
+  ? string.split(delimiters[0]).map((x) => recursiveSplit(x, delimiters.slice(1), parseNumber))
+  : parseNumber ? Number(string) : string);
 
 /**
  * Read a file in a promise and split it into an array based on one or more delimiters.
  *
  * @param {string} fileName
  * @param {Array} delimiters
- * @returns Array
+ * @returns {Array}
  */
-const readInputFile = async (fileName, delimiters = ['\n']) => {
+const readInputFile = async (fileName, delimiters = ['\n'], parseNumber = false) => {
   try {
     const data = await readFile(`./input/${fileName}.txt`, 'utf8');
-    return recursiveSplit(data, delimiters);
+    return recursiveSplit(data, delimiters, parseNumber);
   } catch (err) {
     console.log(err);
     return '';
@@ -50,7 +51,7 @@ const readInputFile = async (fileName, delimiters = ['\n']) => {
  *
  * @param {Array} array
  * @param {number} n
- * @returns Array
+ * @returns {Array}
  */
 const splitUpArray = (array, n) => {
   const sourceArray = [...array];

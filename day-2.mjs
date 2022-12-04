@@ -9,7 +9,7 @@ import {
 * @param {Array} shapes
  * @returns {string} shapes[0] opponentShape
  * @returns {string} shapes[1] playerShape
- * @returns number
+ * @returns {number}
  */
 const getRoundOneScore = ([opponentShape, playerShape]) => {
   // Round One assumes A, X: Rock; B, Y: Paper, C, Z: Scissors
@@ -39,7 +39,7 @@ const getRoundOneScore = ([opponentShape, playerShape]) => {
 * @param {Array} shapes
  * @param {string} shapes[0] opponentShape
  * @param {string} shapes[1] playerShape
- * @returns number
+ * @returns {number}
  */
 const getRoundTwoScore = ([opponentShape, intendedOutcome]) => {
   // Round Two assumes X: Lose, Y: Draw, Z: Win

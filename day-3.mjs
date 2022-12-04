@@ -7,7 +7,8 @@ import {
 /**
  * Get the point value for a letter
  *
- * @param {string) letter
+ * @param {string} letter
+ * @returns {number}
  */
 const getPointValue = (letter) => {
   const charCode = letter.charCodeAt(0);
@@ -25,7 +26,7 @@ const getPointValue = (letter) => {
  * Get the badge for the elf team.
  *
  * @param {Array} team
- * @returns string
+ * @returns {string}
  */
 // I was trying to do this recursively so the same method could be used for both puzzles,
 // but it didn't work right off the bat, and life's too short.
@@ -37,7 +38,7 @@ const findTeambadge = (team) => team[0]
  * Find the item that should be in one compartment of the rucksack but is in both.
  *
  * @param {Array} team
- * @returns string
+ * @returns {string}
  */
 const findMisplacedItem = (rucksack) => {
   const secondCompartment = [...rucksack];

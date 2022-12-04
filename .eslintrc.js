@@ -9,5 +9,6 @@ module.exports = {
   rules: {
     'no-console': 'off',
     'import/extensions': 'off',
+    'no-nested-ternary': 'off',
   },
 };
