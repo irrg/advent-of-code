@@ -7,8 +7,8 @@ import {
  * Get the points for a round of the game using the uh, interesting interpretation of the playbook.
  *
 * @param {Array} shapes
- * @returns {string} shapes[0] opponentShape
- * @returns {string} shapes[1] playerShape
+ * @param {string} shapes[0] opponentShape
+ * @param {string} shapes[1] playerShape
  * @returns {number}
  */
 const getRoundOneScore = ([opponentShape, playerShape]) => {

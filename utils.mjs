@@ -6,7 +6,7 @@ import { readFile } from 'fs/promises';
  * @param {Array} values
  * @returns {number}
  */
-const getSum = (values) => values.reduce((total, i) => total + parseInt(i, 10), 0);
+const getSum = (values) => values.reduce((total, i) => total + Number(i), 0);
 
 /**
  * Get the highest n values from an array.
@@ -27,7 +27,7 @@ const getNHighestValues = (values, n) => getSum(values.sort((a, b) => a - b).sli
  */
 const recursiveSplit = (string, delimiters, parseNumber) => (delimiters.length
   ? string.split(delimiters[0]).map((x) => recursiveSplit(x, delimiters.slice(1), parseNumber))
-  : parseNumber ? Number(string) : string);
+: parseNumber ? Number(string) : string);
 
 /**
  * Read a file in a promise and split it into an array based on one or more delimiters.
