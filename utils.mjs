@@ -20,9 +20,10 @@ const getNHighestValues = (values, n) => getSum(values.sort((a, b) => a - b).sli
 /**
  * Recursively split an array of values based on one or more delimiters.
  *
- * @param {string} string
- * @param {Array} delimiters
- * @param {boolean} parseNumber
+ * @param {Object} payload
+ * @param {string} payload.string
+ * @param {Array} payload.delimiters
+ * @param {boolean} payload.parseNumbers
  * @returns {Array}
  */
 const recursiveSplit = (string, delimiters, parseNumber) => (delimiters.length
