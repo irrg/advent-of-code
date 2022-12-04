@@ -27,7 +27,7 @@ const getNHighestValues = (values, n) => getSum(values.sort((a, b) => a - b).sli
  */
 const recursiveSplit = (string, delimiters, parseNumber) => (delimiters.length
   ? string.split(delimiters[0]).map((x) => recursiveSplit(x, delimiters.slice(1), parseNumber))
-: parseNumber ? Number(string) : string);
+  : parseNumber ? Number(string) : string);
 
 /**
  * Read a file in a promise and split it into an array based on one or more delimiters.
@@ -36,10 +36,14 @@ const recursiveSplit = (string, delimiters, parseNumber) => (delimiters.length
  * @param {Array} delimiters
  * @returns {Array}
  */
-const readInputFile = async (fileName, delimiters = ['\n'], parseNumber = false) => {
+const readInputFile = async ({
+  filename,
+  delimiters = ['\n'],
+  parseNumbers = false,
+}) => {
   try {
-    const data = await readFile(`./input/${fileName}.txt`, 'utf8');
-    return recursiveSplit(data, delimiters, parseNumber);
+    const data = await readFile(`./input/${filename}.txt`, 'utf8');
+    return recursiveSplit(data, delimiters, parseNumbers);
   } catch (err) {
     console.log(err);
     return '';

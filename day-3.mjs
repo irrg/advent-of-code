@@ -52,7 +52,10 @@ const findMisplacedItem = (rucksack) => {
  * Do the thing.
  */
 const main = async () => {
-  const rucksacks = await readInputFile('day-3', ['\n', '']);
+  const rucksacks = await readInputFile({
+    filename: 'day-3',
+    delimiters: ['\n', ''],
+  });
   const teams = splitUpArray(rucksacks, 3);
 
   console.log('Part 1', getSum(

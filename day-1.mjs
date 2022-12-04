@@ -8,7 +8,10 @@ import {
  * Do the thing.
  */
 const main = async () => {
-  const values = (await readInputFile('day-1', ['\n\n', '\n']))
+  const values = (await readInputFile({
+    filename: 'day-1',
+    delimiters: ['\n\n', '\n'],
+  }))
     .map((elf) => getSum(elf));
 
   console.log('Part 1', getNHighestValues(values, 1));

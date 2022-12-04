@@ -78,7 +78,10 @@ const getRoundTwoScore = ([opponentShape, intendedOutcome]) => {
  * Do the thing.
  */
 const main = async () => {
-  const values = await readInputFile('day-2', ['\n', ' ']);
+  const values = await readInputFile({
+    filename: 'day-2',
+    delimiters: ['\n', ' '],
+  });
   const partOneScore = getSum(values.map((game) => getRoundOneScore(game)));
   const partTwoScore = getSum(values.map((game) => getRoundTwoScore(game)));
 
