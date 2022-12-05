@@ -12,8 +12,6 @@ const main = async () => {
   });
 
   console.log(crateFile);
-
-
 };
 
 main();

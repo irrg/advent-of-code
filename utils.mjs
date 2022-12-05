@@ -6,7 +6,10 @@ import { readFile } from 'fs/promises';
  * @param {Array} values array of values
  * @returns {number} sum of the values in the array
  */
-const getSum = (values) => values.reduce((total, i) => total + Number(i), 0);
+const getSum = (values) => values.reduce(
+  (total, i) => total + Number(i),
+  0,
+);
 
 /**
  * Get the highest n values from an array.
@@ -15,36 +18,38 @@ const getSum = (values) => values.reduce((total, i) => total + Number(i), 0);
  * @param {number} n number of values we want
  * @returns {Array} found values
  */
-const getNHighestValues = (values, n) => getSum(values.sort((a, b) => a - b).slice(-n));
+const getNHighestValues = (values, n) => getSum(
+  values
+    .sort((a, b) => a - b)
+    .slice(-n),
+);
 
 /**
  * Recursively split an array of values based on one or more delimiters.
  *
- * @param {object} payload object payload
- * @param {string} payload.string string to manipulate
- * @param {Array} payload.delimiters one or more delimiters
- * @param {boolean} payload.parseNumbers should we parse numbers or leave (for strings)
+ * @param {string} string string to manipulate
+ * @param {Array} delimiters one or more delimiters
+ * @param {boolean} parseNumbers should we parse numbers or leave (for strings)
  * @returns {Array} split up array
  */
-const recursiveSplit = ({
+const recursiveSplit = (
   string,
   delimiters,
   parseNumbers,
-}) => {
-  console.log(string, delimiters.length, parseNumbers);
-  return (delimiters.length 
-    ? string.split(delimiters[0]).map((x) => recursiveSplit(x, delimiters.slice(1), parseNumbers))
-    : parseNumbers ? Number(string) : string);
-};
+) => (
+  delimiters.length
+    ? string.split(delimiters[0]).map(
+      (subString) => recursiveSplit(
+        subString,
+        delimiters.slice(1),
+        parseNumbers,
+      ),
+    )
+    : parseNumbers
+      ? Number(string)
+      : string
+);
 
-  // const recursiveSplit = ({
-  //   string,
-  //   delimiters,
-  //   parseNumbers,
-  // }) => (delimiters.length
-  //   ? string.split(delimiters[0]).map((x) => recursiveSplit(x, delimiters.slice(1), parseNumbers))
-  //   : parseNumbers ? Number(string) : string);
-  
 /**
  * Read a file in a promise and split it into an array based on one or more delimiters.
  *
@@ -61,13 +66,11 @@ const readInputFile = async ({
 }) => {
   try {
     const data = await readFile(`./input/${filename}.txt`, 'utf8');
-    const split = recursiveSplit({
-      string: data,
+    return recursiveSplit(
+      data,
       delimiters,
       parseNumbers,
-    });
-    console.log(split);
-    return split;
+    );
   } catch (err) {
     console.log(err);
     return '';
