@@ -30,10 +30,21 @@ const recursiveSplit = ({
   string,
   delimiters,
   parseNumbers,
-}) => (delimiters.length
-  ? string.split(delimiters[0]).map((x) => recursiveSplit(x, delimiters.slice(1), parseNumbers))
-  : parseNumbers ? Number(string) : string);
+}) => {
+  console.log(string, delimiters.length, parseNumbers);
+  return (delimiters.length 
+    ? string.split(delimiters[0]).map((x) => recursiveSplit(x, delimiters.slice(1), parseNumbers))
+    : parseNumbers ? Number(string) : string);
+};
 
+  // const recursiveSplit = ({
+  //   string,
+  //   delimiters,
+  //   parseNumbers,
+  // }) => (delimiters.length
+  //   ? string.split(delimiters[0]).map((x) => recursiveSplit(x, delimiters.slice(1), parseNumbers))
+  //   : parseNumbers ? Number(string) : string);
+  
 /**
  * Read a file in a promise and split it into an array based on one or more delimiters.
  *
@@ -50,11 +61,13 @@ const readInputFile = async ({
 }) => {
   try {
     const data = await readFile(`./input/${filename}.txt`, 'utf8');
-    return recursiveSplit({
+    const split = recursiveSplit({
       string: data,
       delimiters,
       parseNumbers,
     });
+    console.log(split);
+    return split;
   } catch (err) {
     console.log(err);
     return '';

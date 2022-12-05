@@ -9,7 +9,7 @@ import {
  */
 const main = async () => {
   const values = (await readInputFile({
-    filename: 'day-1',
+    filename: 'day-1-example',
     delimiters: ['\n\n', '\n'],
   }))
     .map((elf) => getSum(elf));
