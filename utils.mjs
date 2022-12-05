@@ -95,10 +95,21 @@ const splitUpArray = (array, n) => {
   return targetArray;
 };
 
+/**
+ * Transpose array helper, because these advents need this too much.
+ *
+ * @param {Array} array array to traverse
+ * @returns {Array} transposed array
+ */
+const transposeArray = (array) => array[0]
+  .map((_, index) => array
+    .map((item) => item[index]));
+
 export {
   getNHighestValues,
   getSum,
   readInputFile,
   recursiveSplit,
   splitUpArray,
+  transposeArray,
 };
