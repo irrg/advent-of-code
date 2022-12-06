@@ -9,21 +9,24 @@ import {
  * @param {Array} stacks array of stack definitions from the file
  * @returns {Array} transformed parsed stacks
  */
-const parseStacks = (stacks) => transposeArray(
-  stacks
-    .split('\n') // split into rows
-    .map((stack) => stack.match(/.{1,4}/g) || []) // split into columns
-    .reverse() // so that the bottom of the stack is the first column
-    .map((row) => row
-      .map((cell) => cell.replace(/\W/g, ''))), // strip spaces and brackets
-)
-  .map((column) => {
+const parseStacks = (stacks) => {
+  const parsedStacks = [];
+  const transposedStacks = transposeArray(
+    stacks
+      .split('\n') // split into rows
+      .map((stack) => stack.match(/.{1,4}/g) || []) // split into columns
+      .reverse() // so that the bottom of the stack is the first column
+      .map((row) => row
+        .map((cell) => cell.replace(/\W/g, ''))), // strip spaces and brackets
+  );
+
+  transposedStacks.forEach((column) => {
     const newColumn = [...column];
-    return {
-      column: Number(newColumn.shift()), // first item is the column number
-      items: newColumn.filter((cell) => cell), // remove empty cells
-    };
+    parsedStacks[newColumn.shift() - 1] = newColumn.filter((cell) => cell); // remove empty cells
   });
+
+  return parsedStacks;
+};
 
 /**
  * Convert the moves section of the file into something usable.
@@ -47,20 +50,68 @@ const parseMoves = (moves) => moves
   });
 
 /**
+ *
+ * @param {object} payload the entire payload
+ * @param {Array} payload.stacks the parsed stacks section of the data file
+ * @param {Array} payload.moves the parsed moves section of the data file
+ * @param {string} payload.model CrateMover model, 9000 or 9001
+ * @returns {Array} the stacks after the moves are run
+ */
+const runCrateMover = ({
+  stacks,
+  moves,
+  model,
+}) => {
+  const localStacks = JSON.parse(JSON.stringify(stacks));
+
+  moves.forEach(({ count, from, to }) => {
+    const fromStack = localStacks[from - 1];
+    const toStack = localStacks[to - 1];
+    const items = fromStack.splice(-count);
+
+    if (model === 9000) {
+      items.reverse();
+    }
+
+    toStack.push(...items);
+  });
+
+  // find the "message" in the stacks
+  return localStacks
+    .map((stack) => stack.pop())
+    .join('');
+};
+
+/**
  * Do the thing.
  */
 const main = async () => {
   // the first half of the file before \n\n is the stack definitions;
   // the rest are the moves.
-  const [stacks, moves] = (await readInputFile({
-    filename: 'day-5-example',
+  const [
+    stacksDefinitions,
+    movesDefinitions,
+  ] = (await readInputFile({
+    filename: 'day-5',
     delimiters: ['\n\n'],
   }));
 
-  const stacksParsed = parseStacks(stacks);
-  const movesParsed = parseMoves(moves);
+  const stacks = parseStacks(stacksDefinitions);
+  const moves = parseMoves(movesDefinitions);
 
-  console.log(stacksParsed, movesParsed);
+  const step1Message = runCrateMover({
+    stacks,
+    moves,
+    model: 9000,
+  });
+  const step2Message = runCrateMover({
+    stacks,
+    moves,
+    model: 9001,
+  });
+
+  console.log('step 1', step1Message);
+  console.log('step 2', step2Message);
 };
 
 main();
