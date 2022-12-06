@@ -89,13 +89,13 @@ const getStacksMessage = (stacks) => stacks.map((stack) => stack.pop()).join('')
 const main = async () => {
   // the first half of the file before \n\n is the stack definitions;
   // the rest are the moves.
-  const [stacks, moves] = (await readInputFile({
+  const [stacksLines, movesLines] = (await readInputFile({
     filename: 'day-5',
     delimiters: ['\n\n'],
   }));
 
-  const step1Stacks = runCrateMover(stacks, moves, 9000);
-  const step2Stacks = runCrateMover(stacks, moves, 9001);
+  const step1Stacks = runCrateMover(stacksLines, movesLines, 9000);
+  const step2Stacks = runCrateMover(stacksLines, movesLines, 9001);
 
   console.log('step 1', getStacksMessage(step1Stacks));
   console.log('step 2', getStacksMessage(step2Stacks));
