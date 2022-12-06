@@ -51,18 +51,22 @@ const parseMoves = (moves) => moves
 
 /**
  *
- * @param {Array} stacksLines the unparsed stacks section of the data file
- * @param {Array} movesLines the unparsed moves section of the data file
- * @param {string} model CrateMover model, 9000 or 9001
+ * @param {object} payload the entire payload
+ * @param {Array} payload.stacks the parsed stacks section of the data file
+ * @param {Array} payload.moves the parsed moves section of the data file
+ * @param {string} payload.model CrateMover model, 9000 or 9001
  * @returns {Array} the stacks after the moves are run
  */
-const runCrateMover = (stacksLines, movesLines, model) => {
-  const stacks = parseStacks(stacksLines);
-  const moves = parseMoves(movesLines);
+const runCrateMover = ({
+  stacks,
+  moves,
+  model,
+}) => {
+  const localStacks = JSON.parse(JSON.stringify(stacks));
 
   moves.forEach(({ count, from, to }) => {
-    const fromStack = stacks[from - 1];
-    const toStack = stacks[to - 1];
+    const fromStack = localStacks[from - 1];
+    const toStack = localStacks[to - 1];
     const items = fromStack.splice(-count);
 
     if (model === 9000) {
@@ -72,16 +76,11 @@ const runCrateMover = (stacksLines, movesLines, model) => {
     toStack.push(...items);
   });
 
-  return stacks;
+  // find the "message" in the stacks
+  return localStacks
+    .map((stack) => stack.pop())
+    .join('');
 };
-
-/**
- * Get the "message" in the stacks
- *
- * @param {Array} stacks updated container stacks
- * @returns {string} the "message" in the stacks
- */
-const getStacksMessage = (stacks) => stacks.map((stack) => stack.pop()).join('');
 
 /**
  * Do the thing.
@@ -89,16 +88,30 @@ const getStacksMessage = (stacks) => stacks.map((stack) => stack.pop()).join('')
 const main = async () => {
   // the first half of the file before \n\n is the stack definitions;
   // the rest are the moves.
-  const [stacksLines, movesLines] = (await readInputFile({
+  const [
+    stacksDefinitions,
+    movesDefinitions,
+  ] = (await readInputFile({
     filename: 'day-5',
     delimiters: ['\n\n'],
   }));
 
-  const step1Stacks = runCrateMover(stacksLines, movesLines, 9000);
-  const step2Stacks = runCrateMover(stacksLines, movesLines, 9001);
+  const stacks = parseStacks(stacksDefinitions);
+  const moves = parseMoves(movesDefinitions);
 
-  console.log('step 1', getStacksMessage(step1Stacks));
-  console.log('step 2', getStacksMessage(step2Stacks));
+  const step1Message = runCrateMover({
+    stacks,
+    moves,
+    model: 9000,
+  });
+  const step2Message = runCrateMover({
+    stacks,
+    moves,
+    model: 9001,
+  });
+
+  console.log('step 1', step1Message);
+  console.log('step 2', step2Message);
 };
 
 main();
