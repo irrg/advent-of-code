@@ -116,8 +116,6 @@ const findDirectories = (items, min = 0, max = 99999999) => {
  * Do the thing.
  */
 const main = async () => {
-  // the first half of the file before \n\n is the stack definitions;
-  // the rest are the moves.
   const { items } = parseFileTree(
     await readInputFile({
       filename: 'day-7',
