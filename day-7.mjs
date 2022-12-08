@@ -39,7 +39,7 @@ const parseFileTree = (transcript, startPosition = 0) => {
           // we are done with this level; return.
           return {
             items,
-            nextPosition: position,
+            position,
             size,
           };
         }
@@ -54,7 +54,7 @@ const parseFileTree = (transcript, startPosition = 0) => {
         const itemsInDir = parseFileTree(transcript, position + 1);
         dir.items = itemsInDir.items;
         dir.size += itemsInDir.size;
-        position = itemsInDir.nextPosition;
+        position = itemsInDir.position;
         size += dir.size;
       }
     } else {
@@ -79,7 +79,7 @@ const parseFileTree = (transcript, startPosition = 0) => {
   // the last level doesn't return since there's no cd ..
   return {
     items,
-    nextPosition: position,
+    position,
     size,
   };
 };
@@ -120,7 +120,7 @@ const main = async () => {
     await readInputFile({
       filename: 'day-7',
       delimiters: ['\n'],
-    })
+    }),
   );
 
   const partOneResult = getSum(findDirectories(items, 0, 100000));
