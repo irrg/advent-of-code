@@ -1,44 +1,28 @@
 import {
   readInputFile,
+  getSum,
 } from './utils.mjs';
-
-const parseItem = (line) => {
-  const [sizeOrType, name] = line.split(' ');
-  const item = { name };
-  item.type = sizeOrType === 'dir' ? 'dir' : 'file';
-  if (sizeOrType !== 'dir') {
-    item.size = sizeOrType;
-  }
-
-  if (item.type === 'file') {
-    item.size = Number(sizeOrType);
-  }
-  if (item.type === 'dir') {
-    item.items = [];
-  }
-
-  return item;
-};
 
 /**
  * Parse the whole transcript into a directory/file hierarchy.
  *
  * @param {Array} transcript array of lines from the transcript
- * @param startPosition
- * @param stratSize
- * @returns {Array} parsed transcript
+ * @param {number} startPosition position in the array to start at
+ * @returns {Array} file tree
  */
-const parseTranscript = (transcript, startPosition = 0) => {
-  const parsedItems = [];
+const parseFileTree = (transcript, startPosition = 0) => {
+  const items = [];
   let position = startPosition;
   let size = 0;
 
   if (startPosition === 0) {
     // we're at the root, so let's create a root item.
-    parsedItems.push({
+    // all datasets start by ls-ing the root so we need a starter item.
+    items.push({
       name: '/',
       type: 'dir',
       items: [],
+      size: 0,
     });
   }
 
@@ -52,46 +36,80 @@ const parseTranscript = (transcript, startPosition = 0) => {
       // ls is pointless, basically a comment, so we ignore it.
       if (command === 'cd') {
         if (arg === '..') {
-          // we are done with this level
+          // we are done with this level; return.
           return {
-            items: parsedItems,
+            items,
             nextPosition: position,
+            size,
           };
         }
 
         // any other arg
-        const dir = parsedItems.find((item) => item.type === 'dir' && item.name === arg);
+        const dir = items.find(
+          (item) => item.type === 'dir' && item.name === arg,
+        );
 
-        const itemsInDir = parseTranscript(transcript, position + 1);
-        console.log(itemsInDir);
+        // the next x lines will be the contents of the dir
+        // a cd .. command will finish it.
+        const itemsInDir = parseFileTree(transcript, position + 1);
         dir.items = itemsInDir.items;
-        dir.size = Number(itemsInDir.size);
+        dir.size += itemsInDir.size;
         position = itemsInDir.nextPosition;
+        size += dir.size;
       }
     } else {
       // everything else is a line of ls output
-      const item = parseItem(line);
+      const [sizeOrType, name] = line.split(' ');
+      const item = {
+        name,
+        size: 0,
+      };
+      item.type = sizeOrType === 'dir' ? 'dir' : 'file';
+      if (item.type !== 'dir') {
+        item.size = Number(sizeOrType);
+      } else {
+        item.items = [];
+      }
       size += item.size;
-      parsedItems.push(item);
+      items.push(item);
     }
     position += 1;
   }
 
+  // the last level doesn't return since there's no cd ..
   return {
-    items: parsedItems,
+    items,
     nextPosition: position,
     size,
   };
 };
 
-const displayTree = (array, indent = 0) => {
-  array.forEach((item) => {
-    const output = `${' '.repeat(indent)}- ${item.name} (${item.type}, size=${item.size})`;
-    console.log(output);
-    if (item.items) {
-      displayTree(item.items, indent + 2);
+/**
+ * Find directories with sizes between a range
+ *
+ * @param {Array} array
+ * @param {number} min minimum size to filter on
+ * @param {number} max maximum size to filter on
+ * @param items
+ * @returns
+ */
+const findDirectories = (items, min = 0, max = 99999999) => {
+  let results = [];
+
+  items.forEach((item) => {
+    if (item.type === 'dir') {
+      if (item.size > min && item.size < max) {
+        results.push(item.size);
+      }
+
+      results = results.concat(
+        findDirectories(item.items, min, max),
+      );
     }
   });
+
+  // sort isn't needed for both rounds, but, why not?
+  return results.sort((a, b) => a - b);
 };
 
 /**
@@ -100,16 +118,15 @@ const displayTree = (array, indent = 0) => {
 const main = async () => {
   // the first half of the file before \n\n is the stack definitions;
   // the rest are the moves.
-  const lineArray = (await readInputFile({
-    filename: 'day-7-example',
-    delimiters: ['\n'],
-  }));
+  const { items } = parseFileTree(
+    await readInputFile({
+      filename: 'day-7',
+      delimiters: ['\n'],
+    })
+  );
 
-  const { items: treeItems } = parseTranscript(lineArray);
-  displayTree(treeItems);
-
-  const partOneResult = true;
-  const partTwoResult = true;
+  const partOneResult = getSum(findDirectories(items, 0, 100000));
+  const partTwoResult = findDirectories(items, items[0].size - 40000000)[0];
 
   console.log('part 1', partOneResult);
   console.log('part 2', partTwoResult);
